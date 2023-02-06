@@ -4,7 +4,7 @@
     <title>Korea Dating Places Recommendation</title>
   </head>
   <body>
-    <h1 id="title">Recommendations for Dating Places in Korea</h1>
+    <h1 id="title">Recommendations for Dating Places</h1>
     <div id="weather-info"></div>
     <div id="recommendation"></div>
 
