@@ -4,7 +4,7 @@
     <title>Korea Dating Places Recommendation</title>
   </head>
   <body>
-    <h1 id="title">Recommendations for Dating Places</h1>
+    <h1 id="title">Recommendations for Dating Places in Korea</h1>
     <div id="weather-info"></div>
     <div id="recommendation"></div>
 
@@ -12,16 +12,23 @@
       const weatherInfoDiv = document.querySelector("#weather-info");
       const recommendationDiv = document.querySelector("#recommendation");
 
-      // sample data for weather information, you would need to fetch the current weather information using a weather API
-      const weather = "clear";
+      // using OpenWeatherMap API
+      const apiKey = "api_key";
+      const location = "Seoul,kr";
 
-      if (weather === "clear") {
-        weatherInfoDiv.innerHTML = "The weather is clear today. Enjoy the beautiful weather!";
-        recommendationDiv.innerHTML = "Here are some outdoor dating places you might want to check out:<br><br>1. Namsan Tower<br>2. Yeouido Park<br>3. Gyeongbokgung Palace<br>4. Jeju Island<br>5. Seoraksan National Park";
-      } else {
-        weatherInfoDiv.innerHTML = "It's cloudy or raining today. How about trying an indoor dating spot?";
-        recommendationDiv.innerHTML = "Here are some indoor dating places you might want to check out:<br><br>1. COEX Aquarium<br>2. Trickeye Museum<br>3. National Museum of Korea<br>4. Hongdae Playground<br>5. Lotte World Tower Observatory";
-      }
+      fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+          const weather = data.weather[0].main.toLowerCase();
+          weatherInfoDiv.innerHTML = `The current weather in Seoul is ${weather}.`;
+          
+          if (weather === "clear") {
+            recommendationDiv.innerHTML = "Here are some outdoor dating places you might want to check out:<br><br>1. Namsan Tower<br>2. Yeouido Park<br>3. Gyeongbokgung Palace<br>4. Jeju Island<br>5. Seoraksan National Park";
+          } else {
+            recommendationDiv.innerHTML = "Here are some indoor dating places you might want to check out:<br><br>1. COEX Aquarium<br>2. Trickeye Museum<br>3. National Museum of Korea<br>4. Hongdae Playground<br>5. Lotte World Tower Observatory";
+          }
+        })
+        .catch(error => console.error(error));
     </script>
   </body>
 </html>
