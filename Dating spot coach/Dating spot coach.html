@@ -5,30 +5,44 @@
   </head>
   <body>
     <h1 id="title">Recommendations for Dating Places in Korea</h1>
+    <div id="location-form">
+      <form>
+        <label for="location-input">Enter a location in Korea:</label>
+        <input type="text" id="location-input" name="location-input" required>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
     <div id="weather-info"></div>
     <div id="recommendation"></div>
 
     <script>
+      const locationForm = document.querySelector("#location-form form");
+      const locationInput = document.querySelector("#location-input");
       const weatherInfoDiv = document.querySelector("#weather-info");
       const recommendationDiv = document.querySelector("#recommendation");
 
-      // using OpenWeatherMap API
-      const apiKey = "api_key";
-      const location = "Seoul,kr";
+      locationForm.addEventListener("submit", event => {
+        event.preventDefault();
 
-      fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`)
-        .then(response => response.json())
-        .then(data => {
-          const weather = data.weather[0].main.toLowerCase();
-          weatherInfoDiv.innerHTML = `The current weather in Seoul is ${weather}.`;
-          
-          if (weather === "clear") {
-            recommendationDiv.innerHTML = "Here are some outdoor dating places you might want to check out:<br><br>1. Namsan Tower<br>2. Yeouido Park<br>3. Gyeongbokgung Palace<br>4. Jeju Island<br>5. Seoraksan National Park";
-          } else {
-            recommendationDiv.innerHTML = "Here are some indoor dating places you might want to check out:<br><br>1. COEX Aquarium<br>2. Trickeye Museum<br>3. National Museum of Korea<br>4. Hongdae Playground<br>5. Lotte World Tower Observatory";
-          }
-        })
-        .catch(error => console.error(error));
+        const location = locationInput.value;
+
+        // using OpenWeatherMap API
+        const apiKey = "api_key";
+
+        fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`)
+          .then(response => response.json())
+          .then(data => {
+            const weather = data.weather[0].main.toLowerCase();
+            weatherInfoDiv.innerHTML = `The current weather in ${location} is ${weather}.`;
+
+            if (weather === "clear") {
+              recommendationDiv.innerHTML = `Here are some outdoor dating places you might want to check out in ${location}:<br><br>1. Local Park<br>2. Botanical Garden<br>3. Beach<br>4. Mountain<br>5. City Center Plaza`;
+            } else {
+              recommendationDiv.innerHTML = `Here are some indoor dating places you might want to check out in ${location}:<br><br>1. Art Museum<br>2. Food Market<br>3. Coffee Shop<br>4. Movie Theater<br>5. Board Game Cafe`;
+            }
+          })
+          .catch(error => console.error(error));
+      });
     </script>
   </body>
 </html>
